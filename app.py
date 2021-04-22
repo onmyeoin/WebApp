@@ -1,12 +1,10 @@
 import os
-import pandas as pd
-from pandas import ExcelWriter
-import numpy as np
 from myproject import app,db
 from flask import render_template, redirect, request, url_for, flash, abort, send_file
 from flask_login import login_user,login_required,logout_user
 from myproject.models import User
 from myproject.forms import LoginForm, RegistrationForm
+from myproject.reporting import create_VAT_Report
 from werkzeug.security import generate_password_hash, check_password_hash
 
 @app.route('/')
@@ -25,7 +23,11 @@ def reports():
         sales_report = request.files['file']
         if sales_report.filename != '':
             filename = sales_report.filename
+            xls_filename = filename[:-3]+"xls"
             sales_report.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            csv_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            xls_path = os.path.join(app.config['REPORTS_FOLDER'], xls_filename)
+            create_VAT_Report(csv_path,xls_path)
             '''
             read csv from UPLOAD_FOLDER
             Generate report
@@ -34,7 +36,7 @@ def reports():
             Download report
             Delete from REPORTS FOLDER
             '''
-        return send_file(f'../uploads/{filename}',mimetype='text/csv',attachment_filename='test.csv',as_attachment=True)
+        return send_file(f'../reports/{xls_filename}',mimetype='xls',attachment_filename=f'{xls_filename}',as_attachment=True)
     return render_template('reports.html')
 
 @app.route('/logout')

@@ -18,7 +18,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['UPLOAD_FOLDER'] = REPORTS_FOLDER
+app.config['REPORTS_FOLDER'] = REPORTS_FOLDER
 
 db = SQLAlchemy(app)
 Migrate(app,db)

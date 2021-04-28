@@ -29,11 +29,7 @@ def reports():
             xls_path = os.path.join(app.config['REPORTS_FOLDER'], xls_filename)
             create_VAT_Report(csv_path,xls_path)
             '''
-            read csv from UPLOAD_FOLDER
-            Generate report
-            Save to REPORTS_FOLDER
             Delete from UPLOAD FOLDER
-            Download report
             Delete from REPORTS FOLDER
             '''
         return send_file(f'../reports/{xls_filename}',mimetype='xls',attachment_filename=f'{xls_filename}',as_attachment=True)
